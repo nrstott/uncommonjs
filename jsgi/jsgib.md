@@ -46,13 +46,8 @@ The request is required to include the following keys:
   * _port_: The port the HTTP request was made to, if not present in the URL may be dervied from the protocol. Must a number.
   * _host_: The 
 * _input_: The request body. Must be an input stream.
-* _jsgi_: Contains JSGI specific data.
-  * _version_: An array representing the version of JSGI e.g. [0,3].
-  * _errors_: Stream for errors.
-  * _multithread_: Truthy if the Application object may be simultaneously invoked by another process.
-  * _multiprocess_: Truthy if an equivalent Application object may be invoked smultaneously by another process.
-  * _runOnce_: Turhty if the Server expects that the Application will be invoked this one time during the lifetime of the containing process.
-* _env_: An Object for Servers and Middleware to extend without worry of future JSGI specifications overwriting their keys. The `env` key must be an boject.
+* _env_: An Object defined in the `prototype` of Request making it a data store shared by all requests. Servers and Middleware may add arbitrary keys to `env`.
+  * version: The string "0.3b"
 
 ### Optional Keys
 
