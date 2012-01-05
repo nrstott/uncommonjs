@@ -2,9 +2,8 @@
 
 ## Philosophy
 
-* Straightforward mapping to HTTP.
+* Straightforward mapping to HTTP with cosmetic modifications to match JavaScript conventions and idioms.
 * Suitable for extension.
-* Cosmetic modifications inline with JavaScript conventions and idioms
 
 ### Principles
 
@@ -38,14 +37,13 @@ The request environment must be a JavaScript Object representing a HTTP request.
 The request is required to include the following keys:
 
 * _method_: The HTTP method e.g. "GET", "POST", "PUT", "DELETE", etc. The value must be an uppercase string.
-* _location_: Homologue to the browser's `window.location`.
-  * _auth_: The authentication information portion of the URL.
-  * _pathname_: The remainder of the request URL's path. This may be an empty string if the request URL targets the Application root.
-  * _search_:  The query string portion of the URL, including the '?'.
-  * _protocol_: The URL scheme per RFC 1738 e.g. "http", "https", etc.
-  * _port_: The port the HTTP request was made to, if not present in the URL may be dervied from the protocol. Must a number.
-  * _host_: The 
-* _input_: The request body. Must be an input stream.
+* _auth_: The authentication information portion of the URL.
+* _pathname_: The remainder of the request URL's path. This may be an empty string if the request URL targets the Application root.
+* _search_:  The query string portion of the URL, including the '?'.
+* _protocol_: The URL scheme per RFC 1738 e.g. "http", "https", etc.
+* _port_: The port the HTTP request was made to, if not present in the URL may be dervied from the protocol. Must a number.
+* _host_: The 
+* _input_: The request body. Must be a ForEachable.
 * _env_: An Object defined in the `prototype` of Request making it a data store shared by all requests. Servers and Middleware may add arbitrary keys to `env`.
   * version: The string "0.3b"
 
@@ -118,15 +116,15 @@ for a group of Middleware that work together to produce a response. By passing t
 optional parameter to a Middleware, the composition of Middleware becomes more transient and composable. There is also
 one less closure which should aid in understanding Middleware and making it more straightforward to learn.
 
-The `location` key was added to the Request to match the `location` property of `window` in the browser in an effort to make
-JSGI more consistent with existing JavaScript means of reprenseting a URL.
+URL information on the Request match the naming scheme of the `location` property of `window` in the browser 
+in an effort to make JSGI more consistent with existing JavaScript means of reprenseting a URL.
 
 ## Examples
 
 ### Request
 
     {
-      version: [1, 1], // parsed HTTP version
+      version: "1.1", // parsed HTTP version
       method: "GET",
       headers: { // HTTP headers, lowercased
         host: "github.com",
@@ -135,15 +133,13 @@ JSGI more consistent with existing JavaScript means of reprenseting a URL.
         "accept-encoding": "gzip,deflate"
       },
       input: (new ForEachable), // request body stream
-      location: {
-        hostname: "github.com",
-        host: "github.com",
-        protocol: "https",
-        search: "",
-        pathname: "/nrstott/bogart"
-      },
+      hostname: "github.com",
+      host: "github.com",
+      protocol: "https",
+      search: "",
+      pathname: "/nrstott/bogart"
       env: { 
-        // env is reserved for Server and Middleware to add keys
+        // env is reserved for Server and Middleware to add keys and is shared amongst Requests
       }
     }
 
