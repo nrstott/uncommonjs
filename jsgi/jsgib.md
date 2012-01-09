@@ -88,26 +88,27 @@ the iteration is completed.
 
 ### Example
 
-function SimpleAsyncForEachable() {
-  var values = [1,2,3,4]
-    , deferred = q.defer();
+    function SimpleAsyncForEachable() {
+      var values = [1,2,3,4]
+        , deferred = q.defer();
 
-  this.forEach = function(callback) {
-    function next() {
-      if (values.length > 0) {
-        setTimeout(function() {
-          // Simulate Async Stream
-          callback(values.shift());
-          next();
-        }, 0);
-      } else {
-        deferred.resolve();
+      // WTF: what is `this` in this context?
+      this.forEach = function(callback) {
+        function next() {
+          if (values.length > 0) {
+            setTimeout(function() {
+              // Simulate Async Stream
+              callback(values.shift());
+              next();
+            }, 0);
+          } else {
+            deferred.resolve();
+          }
+        }
+
+        return deferred.promise;
       }
     }
-
-    return deferred.promise;
-  }
-}
 
 ### Reasons for JSGI B
 
@@ -153,21 +154,21 @@ in an effort to make JSGI more consistent with existing JavaScript means of repr
 
 ### Middleware Example
 
-function LogRequest(req, next) {
-  writeToLog(new Date(), JSON.strigify(req)); // assume writeToLog is defined elsewhere
-  return next(req);
-}
-
-function NotFound(req, next) {
-  var deferred = q.defer();
-te
-  (next, deferred.resolve, function onRejection() {
-    return {
-      status: 404,
-      body: [ 'Not Found' ],
-      headers: { 'content-type': 'text/plain' }
+    function LogRequest(req, next) {
+      writeToLog(new Date(), JSON.strigify(req)); // assume writeToLog is defined elsewhere
+      return next(req);
     }
-  })
 
-  return deferred.promise;
-}
+    function NotFound(req, next) {
+      var deferred = q.defer();
+    te // WTF: te???
+      (next, deferred.resolve, function onRejection() {
+        return {
+          status: 404,
+          body: [ 'Not Found' ],
+          headers: { 'content-type': 'text/plain' }
+        }
+      })
+
+      return deferred.promise;
+    }
