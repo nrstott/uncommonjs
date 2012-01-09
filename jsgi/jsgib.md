@@ -160,7 +160,8 @@ in an effort to make JSGI more consistent with existing JavaScript means of repr
 
     function NotFound(req, next) {
       var deferred = q.defer();
-      return q.when(next(req), deferred.resolve, function onRejection() {
+      
+      q.when(next(req), deferred.resolve, function onRejection() {
         return {
           status: 404,
           body: [ 'Not Found' ],
