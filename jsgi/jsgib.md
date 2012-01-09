@@ -42,7 +42,7 @@ The request is required to include the following keys:
 * _search_:  The query string portion of the URL, including the '?'.
 * _protocol_: The URL scheme per RFC 1738 e.g. "http", "https", etc.
 * _port_: The port the HTTP request was made to, if not present in the URL may be dervied from the protocol. Must a number.
-* _host_: The 
+* _hostname_: The host name without hte port number.
 * _input_: The request body. Must be a ForEachable.
 * _env_: An Object defined in the `prototype` of Request making it a data store shared by all requests. Servers and Middleware may add arbitrary keys to `env`.
   * version: The string "0.3b"
