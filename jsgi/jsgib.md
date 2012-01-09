@@ -92,7 +92,6 @@ the iteration is completed.
       var values = [1,2,3,4]
         , deferred = q.defer();
 
-      // WTF: what is `this` in this context?
       this.forEach = function(callback) {
         function next() {
           if (values.length > 0) {
@@ -161,14 +160,13 @@ in an effort to make JSGI more consistent with existing JavaScript means of repr
 
     function NotFound(req, next) {
       var deferred = q.defer();
-    te // WTF: te???
-      (next, deferred.resolve, function onRejection() {
+      q.when(next(req), deferred.resolve, function onRejection() {
         return {
           status: 404,
           body: [ 'Not Found' ],
           headers: { 'content-type': 'text/plain' }
         }
-      })
+      });
 
       return deferred.promise;
     }
