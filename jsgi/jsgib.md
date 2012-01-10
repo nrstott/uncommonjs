@@ -88,10 +88,21 @@ the iteration is completed.
 
 ### Example
 
+    /**
+     * Simulate an Async Stream
+     *
+     * @constructor
+     */
     function SimpleAsyncForEachable() {
       var values = [1,2,3,4]
         , deferred = q.defer();
 
+      /**
+       * Iterate over the stream.
+       *
+       * @params {Function} callback  A function with the following signature: `function(data){}`
+       * @returns {Promise} A promise that resolves when the iteration is complete.
+       */
       this.forEach = function(callback) {
         function next() {
           if (values.length > 0) {
@@ -104,6 +115,8 @@ the iteration is completed.
             deferred.resolve();
           }
         }
+
+        next();
 
         return deferred.promise;
       }
